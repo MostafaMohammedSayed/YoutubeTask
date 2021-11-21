@@ -50,11 +50,9 @@ class HomeViewModel : BaseViewModel() {
                 }
 
                 override fun onNext(videoList: List<DatabaseVideoInfo>) {
-                    try {
                         allVideoInfoLiveData.postValue(videoList)
-                    } catch (error: Exception) {
-                        Log.e("HomeViewModel", error.message.toString(), error)
-
+                    if (videoList.isEmpty()){
+                        fetchVideoInfo()
                     }
                 }
 
@@ -72,7 +70,6 @@ class HomeViewModel : BaseViewModel() {
 
     fun fetchData(){
         fetchDataFromDatabase()
-        fetchVideoInfo()
     }
 
 
