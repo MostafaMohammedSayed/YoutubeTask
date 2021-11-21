@@ -18,13 +18,16 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         setUpViewModel()
         setUpViews()
+        fetchUiData()
         setUpObservers()
     }
 
+    private fun fetchUiData() {
+        viewModel.fetchData()
+    }
+
     private fun setUpObservers() {
-        viewModel.observeVideoInfoLiveData(this,{videoInfo->
-            Log.i(this.javaClass.simpleName,videoInfo.toString())
-        },
+        viewModel.observeAllVideosInfoLiveData(this,
             { databaseVideosInfo->
                 Log.i(this.javaClass.simpleName,databaseVideosInfo.isEmpty().toString())
                 videosAdapter.videos.addAll(databaseVideosInfo)

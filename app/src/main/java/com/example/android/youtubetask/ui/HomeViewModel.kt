@@ -6,17 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.android.youtubetask.database.DatabaseVideoInfo
 import com.example.android.youtubetask.models.VideoInfo
+import com.example.android.youtubetask.repository.VideoInfoRepositoryImpl
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class HomeViewModel : BaseViewModel() {
-    private val videoInfoLiveData = MutableLiveData<VideoInfo>()
     private val allVideoInfoLiveData = MutableLiveData<List<DatabaseVideoInfo>>()
+    private val repo = VideoInfoRepositoryImpl()
 
 
     private fun fetchVideoInfo() {
 
-        videoRemoteRepo.getVideoInfoFromRemote()
+        repo.getVideoInfoFromRemote()
             .subscribeOn(Schedulers.io())
             .subscribeWith(object : io.reactivex.rxjava3.core.Observer<VideoInfo> {
                 override fun onSubscribe(d: Disposable) {
@@ -24,8 +25,7 @@ class HomeViewModel : BaseViewModel() {
                 }
 
                 override fun onNext(vInfo: VideoInfo) {
-                    //videoInfoLiveData.value = vInfo
-                    videoLocaleRepo.storeVideoInfo(vInfo)
+                    repo.storeVideoInfo(vInfo)
                 }
 
                 override fun onError(error: Throwable) {
@@ -41,7 +41,7 @@ class HomeViewModel : BaseViewModel() {
 
     private fun fetchDataFromDatabase() {
 
-        videoLocaleRepo.getAllVideoInfoFromLocal()
+        repo.getAllVideoInfoFromLocal()
             .subscribeOn(Schedulers.io())
             .subscribeWith(object :
                 io.reactivex.rxjava3.core.Observer<List<DatabaseVideoInfo>> {
@@ -70,13 +70,16 @@ class HomeViewModel : BaseViewModel() {
 
     }
 
-    fun observeVideoInfoLiveData(
-        owner: LifecycleOwner, observer: Observer<VideoInfo>,
-        allObserver: Observer<List<DatabaseVideoInfo>>
-    ) {
+    fun fetchData(){
         fetchDataFromDatabase()
         fetchVideoInfo()
-        videoInfoLiveData.observe(owner, observer)
+    }
+
+
+    fun observeAllVideosInfoLiveData(
+        owner: LifecycleOwner,
+        allObserver: Observer<List<DatabaseVideoInfo>>
+    ) {
         allVideoInfoLiveData.observe(owner, allObserver)
     }
 }
