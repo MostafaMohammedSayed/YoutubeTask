@@ -58,6 +58,7 @@ class HomeViewModel : BaseViewModel() {
 
                 override fun onError(error: Throwable) {
                     Log.e("HomeViewModel", error.message.toString(), error)
+                    allVideoInfoLiveData.postValue(Resource.error(error))
                 }
 
                 override fun onComplete() {
