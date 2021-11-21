@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.youtubetask.R
+import com.example.android.youtubetask.utils.Resource
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -28,10 +29,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         viewModel.observeAllVideosInfoLiveData(this,
-            { databaseVideoInfo->
-                Log.i(this.javaClass.simpleName,databaseVideoInfo.toString())
-                videosAdapter.videos.add(databaseVideoInfo)
-                videosAdapter.notifyDataSetChanged()
+            { databaseVideoInfoResource->
+                Log.i(this.javaClass.simpleName,databaseVideoInfoResource.value.toString())
+
+                if (databaseVideoInfoResource.state == Resource.State.SUCCESS){
+                    databaseVideoInfoResource.value?.let { videosAdapter.videos.add(it) }
+                    videosAdapter.notifyDataSetChanged()
+                }
             })
     }
 

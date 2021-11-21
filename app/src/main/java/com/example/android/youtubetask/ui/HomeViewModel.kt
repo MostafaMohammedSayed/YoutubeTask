@@ -7,11 +7,12 @@ import androidx.lifecycle.Observer
 import com.example.android.youtubetask.database.DatabaseVideoInfo
 import com.example.android.youtubetask.models.VideoInfo
 import com.example.android.youtubetask.repository.VideoInfoRepositoryImpl
+import com.example.android.youtubetask.utils.Resource
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class HomeViewModel : BaseViewModel() {
-    private val allVideoInfoLiveData = MutableLiveData<DatabaseVideoInfo>()
+    private val allVideoInfoLiveData = MutableLiveData<Resource<DatabaseVideoInfo>>()
     private val repo = VideoInfoRepositoryImpl()
 
 
@@ -40,6 +41,7 @@ class HomeViewModel : BaseViewModel() {
     }
 
     private fun fetchDataFromDatabase() {
+        allVideoInfoLiveData.value = Resource.loading()
 
         repo.getVideoInfoFromLocal()
             .subscribeOn(Schedulers.io())
@@ -50,7 +52,7 @@ class HomeViewModel : BaseViewModel() {
                 }
 
                 override fun onNext(videoList: DatabaseVideoInfo) {
-                        allVideoInfoLiveData.postValue(videoList)
+                        allVideoInfoLiveData.postValue(Resource.success(videoList))
                         fetchVideoInfo()
                 }
 
@@ -73,7 +75,7 @@ class HomeViewModel : BaseViewModel() {
 
     fun observeAllVideosInfoLiveData(
         owner: LifecycleOwner,
-        observer: Observer<DatabaseVideoInfo>
+        observer: Observer<Resource<DatabaseVideoInfo>>
     ) {
         allVideoInfoLiveData.observe(owner, observer)
     }
