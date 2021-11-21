@@ -16,7 +16,7 @@ class VideoInfoRemoteRepositoryImpl : VideoInfoRepository {
         throw IllegalStateException("should be called from local repo only")
     }
 
-    override fun getAllVideoInfoFromLocal(): Observable<List<DatabaseVideoInfo>> {
+    override fun getVideoInfoFromLocal(): Observable<DatabaseVideoInfo> {
         throw IllegalStateException("should be called from local repo only")
     }
 }

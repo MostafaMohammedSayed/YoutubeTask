@@ -15,7 +15,7 @@ class VideoInfoRepositoryImpl: VideoInfoRepository {
         cashRepo.storeVideoInfo(videoInfo)
     }
 
-    override fun getAllVideoInfoFromLocal(): Observable<List<DatabaseVideoInfo>> {
-        return cashRepo.getAllVideoInfoFromLocal()
+    override fun getVideoInfoFromLocal(): Observable<DatabaseVideoInfo> {
+        return cashRepo.getVideoInfoFromLocal()
     }
 }

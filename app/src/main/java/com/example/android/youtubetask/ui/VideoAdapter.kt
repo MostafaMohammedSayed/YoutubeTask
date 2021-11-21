@@ -41,7 +41,7 @@ class VideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return if (videos.size == 0) {
-            10
+            1
         } else {
             videos.size
         }

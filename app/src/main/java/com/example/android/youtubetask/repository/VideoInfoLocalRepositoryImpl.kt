@@ -20,7 +20,7 @@ class VideoInfoLocalRepositoryImpl: VideoInfoRepository {
         vIDatabase.videoInfoDao.saveVideoInfo(datbaseVideoInfo)
     }
 
-    override fun getAllVideoInfoFromLocal(): Observable<List<DatabaseVideoInfo>> {
+    override fun getVideoInfoFromLocal(): Observable<DatabaseVideoInfo> {
         return vIDatabase.videoInfoDao.getAllVideoInfo()
     }
 }

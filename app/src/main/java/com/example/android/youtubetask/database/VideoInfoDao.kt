@@ -11,7 +11,7 @@ interface VideoInfoDao {
     fun saveVideoInfo(databaseVideoInfo: DatabaseVideoInfo)
 
     @Query("Select * From databasevideoinfo")
-    fun getAllVideoInfo(): Observable<List<DatabaseVideoInfo>>
+    fun getAllVideoInfo(): Observable<DatabaseVideoInfo>
 
     @Query("Select * From databasevideoinfo Where title =:wantedTitle")
     fun getVideoInfoByTitle(wantedTitle: String): Observable<DatabaseVideoInfo>

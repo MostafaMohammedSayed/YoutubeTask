@@ -7,5 +7,5 @@ import io.reactivex.rxjava3.core.Observable
 interface VideoInfoRepository {
     fun getVideoInfoFromRemote(): Observable<VideoInfo>
     fun storeVideoInfo(videoInfo: VideoInfo)
-    fun getAllVideoInfoFromLocal(): Observable<List<DatabaseVideoInfo>>
+    fun getVideoInfoFromLocal(): Observable<DatabaseVideoInfo>
 }

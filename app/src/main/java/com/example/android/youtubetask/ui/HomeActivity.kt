@@ -28,9 +28,9 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         viewModel.observeAllVideosInfoLiveData(this,
-            { databaseVideosInfo->
-                Log.i(this.javaClass.simpleName,databaseVideosInfo.isEmpty().toString())
-                videosAdapter.videos.addAll(databaseVideosInfo)
+            { databaseVideoInfo->
+                Log.i(this.javaClass.simpleName,databaseVideoInfo.toString())
+                videosAdapter.videos.add(databaseVideoInfo)
                 videosAdapter.notifyDataSetChanged()
             })
     }

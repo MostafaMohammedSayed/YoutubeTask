@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class HomeViewModel : BaseViewModel() {
-    private val allVideoInfoLiveData = MutableLiveData<List<DatabaseVideoInfo>>()
+    private val allVideoInfoLiveData = MutableLiveData<DatabaseVideoInfo>()
     private val repo = VideoInfoRepositoryImpl()
 
 
@@ -41,19 +41,17 @@ class HomeViewModel : BaseViewModel() {
 
     private fun fetchDataFromDatabase() {
 
-        repo.getAllVideoInfoFromLocal()
+        repo.getVideoInfoFromLocal()
             .subscribeOn(Schedulers.io())
             .subscribeWith(object :
-                io.reactivex.rxjava3.core.Observer<List<DatabaseVideoInfo>> {
+                io.reactivex.rxjava3.core.Observer<DatabaseVideoInfo> {
                 override fun onSubscribe(d: Disposable) {
                     Log.i("HomeViewModel", "Second Subscription Started")
                 }
 
-                override fun onNext(videoList: List<DatabaseVideoInfo>) {
+                override fun onNext(videoList: DatabaseVideoInfo) {
                         allVideoInfoLiveData.postValue(videoList)
-                    if (videoList.isEmpty()){
                         fetchVideoInfo()
-                    }
                 }
 
                 override fun onError(error: Throwable) {
@@ -75,8 +73,8 @@ class HomeViewModel : BaseViewModel() {
 
     fun observeAllVideosInfoLiveData(
         owner: LifecycleOwner,
-        allObserver: Observer<List<DatabaseVideoInfo>>
+        observer: Observer<DatabaseVideoInfo>
     ) {
-        allVideoInfoLiveData.observe(owner, allObserver)
+        allVideoInfoLiveData.observe(owner, observer)
     }
 }
